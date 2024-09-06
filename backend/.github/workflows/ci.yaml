@@ -1,0 +1,81 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set up .env file
+        run: |
+          echo "SECRET_KEY=mysecretkey" > .env
+          echo "AIRTABLE_PERSONAL_ACCESS_TOKEN=$AIRTABLE_PERSONAL_ACCESS_TOKEN" >> .env
+          echo "AIRTABLE_BASE_ID=$AIRTABLE_BASE_ID" >> .env
+          echo "AIRTABLE_TABLE_NAME=$AIRTABLE_TABLE_NAME" >> .env
+          echo "PERPLEXITY_API_KEY=$PERPLEXITY_API_KEY" >> .env
+          echo "STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY" >> .env
+          echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env
+          echo "FLASK_ENV=testing" >> .env
+
+      - name: Run Tests
+        run: |
+          pytest --disable-warnings
+
+      - name: Code Linting (Black)
+        run: |
+          pip install black
+          black --check .
+
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
+
+      - name: Deploy to Heroku (optional)
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "your-heroku-app"
+          heroku_email: "your-email@example.com"

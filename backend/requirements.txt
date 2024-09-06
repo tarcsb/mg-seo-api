@@ -1,0 +1,38 @@
+# Flask framework and dependencies
+Flask
+python-dotenv
+
+# Optional database support (if needed)
+SQLAlchemy
+
+# Swagger for API documentation
+flask-restx  # Replacing flask-restplus for Swagger integration
+
+# Testing dependencies
+pytest
+pytest-cov
+pytest-xdist
+requests
+hypothesis
+pytest-mock
+
+# Coverage for code coverage reports
+coverage
+
+# Behave for BDD testing
+behave
+
+# Linting and Formatting
+black
+flake8
+
+# Optional Tox for testing in multiple environments
+tox
+
+# Other optional development tools
+# Flask depends on click internally
+
+
+logstash_formatter
+beautifulsoup4  # Adding bs4 for HTML parsing
+

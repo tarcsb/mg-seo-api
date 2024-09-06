@@ -1,0 +1,93 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+venv.bak/
+venv-env/
+
+# Flask secret keys and instance folder
+instance/
+*.secret
+*.key
+
+# Environment variables
+.env
+.env.*
+
+# Pytest cache
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+*.sql
+
+# Static and media files
+staticfiles/
+mediafiles/
+
+# Caches and temporary files
+*.bak
+*.swp
+*.tmp
+*.temp
+*.log
+*.pid
+*.seed
+*.backup
+
+# MacOS files
+.DS_Store
+
+# Docker
+*.docker
+docker-compose.override.yml
+docker-compose.override.*.yml
+
+# PyInstaller
+#  Usually these files are written by a python script from a PyInstaller bundle
+*.manifest
+*.spec
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Linting and formatting reports
+flake8.log
+pylint.log
+.mypy_cache/
+

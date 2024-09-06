@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: SEO Analysis API
+  description: API for SEO analysis using Perplexity
+  version: 1.0.0
+
+paths:
+  /analyze/perplexity:
+    post:
+      summary: Analyze SEO elements using Perplexity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  example: "https://example.com"
+                keyword:
+                  type: string
+                  example: "example_keyword"
+      responses:
+        200:
+          description: SEO Analysis successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  seo_data:
+                    type: string
+                    example: "SEO data analysis results"
+                  perplexity_analysis:
+                    type: string
+                    example: "Actionable insights from Perplexity"
+        400:
+          description: Bad request
+        500:
+          description: Internal server error

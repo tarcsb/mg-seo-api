@@ -1,0 +1,181 @@
+/seo-tool
+├── /backend
+│   ├── /api
+│   │   ├── __init__.py
+│   │   ├── auth.py (Handles authentication, payment gateways)
+│   │   ├── seo_analysis.py (Handles SEO analysis, competitor analysis, local SEO)
+│   │   ├── perplexity_integration.py (Handles Perplexity API queries)
+│   │   ├── data_transformation.py (Data transformation logic)
+│   │   └── logging_config.py (Custom logging configuration for ELK stack)
+│   ├── /models
+│   │   ├── subscription_model.py (Subscription plans and payments management)
+│   │   ├── user_model.py (User profile, roles, permissions)
+│   ├── /utils
+│   │   ├── nlp_processing.py (Natural Language Processing utilities)
+│   │   ├── alerting.py (Alerting system for SEO changes)
+│   │   └── error_handling.py (Centralized error handling for the API)
+│   ├── config.py (Flask and application-wide configuration)
+│   ├── requirements.txt (Project dependencies)
+│   ├── app.py (Main Flask application entry point)
+│   └── wsgi.py (Web Server Gateway Interface)
+├── /frontend
+│   ├── /components
+│   │   ├── Navbar.js (Navigation bar with upgrade options)
+│   │   ├── Dashboard.js (Main dashboard with SEO metrics)
+│   │   ├── ReportViewer.js (Displays dynamic reports and charts)
+│   │   ├── Profile.js (User profile and subscription management)
+│   │   ├── Subscription.js (Upgrade/Downgrade Subscription)
+│   │   ├── CompetitorAnalysis.js (Performs competitor analysis)
+│   └── /utils
+│   │   ├── api.js (API utility for handling backend requests)
+│   │   └── constants.js (Stores constants for themes and API routes)
+│   ├── /styles
+│   │   ├── theme.js (Material-UI custom theme settings)
+│   └── App.js (Main React entry file)
+├── /docker
+│   ├── Dockerfile (Builds backend services)
+│   ├── docker-compose.yml (Sets up backend, frontend, ELK stack)
+├── /tests
+│   ├── test_seo_analysis.py (Unit tests for SEO analysis features)
+│   └── test_perplexity_integration.py (Tests for Perplexity API queries)
+├── .env (Environment variables for Flask API, Stripe, Perplexity API)
+└── README.md (Project overview and installation instructions)
+
+
+. Technical Requirements
+Frontend: React 18 with Material-UI (MUI) for component-based UI, built on modern JavaScript.
+Backend: Flask API with multiple microservices for SEO analysis, user management, payment handling, and data storage.
+Database: SQLite or Postgres for persistent storage, including user data and subscription plans.
+Cache: Redis or in-memory caching to store temporary SEO and analysis results for faster retrieval.
+API Integration: Integration with Perplexity AI for content and SEO keyword analysis, Stripe for payments, and a Backlink tracker API.
+Logging: Elasticsearch, Logstash, and Kibana (ELK) for centralized logging and error monitoring.
+Cloud: Docker containers for scalability and deployment using Kubernetes, AWS, or GCP.
+Data Transformation: Dynamic data transformation and optimization of SEO metrics, stored in a database or cache for future analysis.
+2. File Descriptions
+Backend:
+__init__.py: Initializes the Flask application, imports configurations, and sets up blueprints for route handling.
+routes.py: Defines the primary API routes for user management, SEO analysis, competitor tracking, and payments.
+Service Files:
+seo_analysis.py:
+
+Handles requests to scrape website data using BeautifulSoup.
+Parses HTML for SEO-relevant metrics such as title tags, meta descriptions, keyword density, headers, alt texts, and more.
+Provides suggestions on how to optimize the website for better SEO performance.
+perplexity_analysis.py:
+
+Makes API calls to the Perplexity API for keyword insights, competitor analysis, and content suggestion.
+Receives response data from the API, transforms it, and stores insights.
+subscription_service.py:
+
+Handles subscription management (upgrade, downgrade, and free tier).
+Stores and updates user subscription details in the database.
+payments_service.py:
+
+Integrates with Stripe API for payment processing.
+Handles creating and managing payment sessions, retrieving payment status, and subscription billing information.
+backlink_tracker.py:
+
+Calls an external backlink tracker API to track and analyze backlinks to the website.
+Provides information on the quality and number of backlinks.
+Utility Files:
+logger.py:
+Centralized logging module that sends error messages and logs to the Elasticsearch (ELK) stack.
+Ensures that critical events are monitored for security, payments, and other services.
+Model Files:
+user_model.py:
+Defines the schema for storing user data, including name, email, subscription status, and SEO history.
+subscription_model.py:
+Defines the schema for storing subscription details, including the plan name, billing cycle, payment status, and linked Stripe session data.
+3. Frontend
+Pages:
+Dashboard.js:
+User dashboard where SEO analysis results, competitor tracking, and backlink analysis are displayed.
+Allows the user to manage their subscriptions, view reports, and initiate new SEO scans.
+Subscription.js:
+UI for handling user subscription details, including payment status, upgrade/downgrade options, and next billing date.
+Integrated with Stripe for managing payments.
+Components:
+SEOReport.js:
+
+Displays detailed SEO results including meta tags, alt texts, keyword suggestions, and page speed analysis.
+Provides graphs and charts with MUI for visual representation of data.
+CompetitorReport.js:
+
+Displays competitor analysis results retrieved from the Perplexity API.
+Provides actionable insights on how to improve the website content and structure based on competitors.
+API Service:
+api.js:
+Contains all API call logic for interacting with the backend, including:
+getSubscriptionDetails: Fetches user subscription data.
+createCheckoutSession: Initiates a Stripe payment session for upgrading/downgrading plans.
+performSEOAnalysis: Sends a request to start an SEO analysis for a particular URL.
+performBacklinkTracking: Initiates backlink tracking for the URL.
+performPerplexityAnalysis: Sends a request for content and keyword insights using the Perplexity API.
+4. API Endpoints and Calls
+POST /api/seo/analyze:
+
+Starts an SEO analysis by scraping the website using BeautifulSoup and calculating key SEO metrics such as page speed, headers, meta tags, alt text, and keyword density.
+POST /api/perplexity/analyze:
+
+Sends a request to Perplexity API to retrieve keyword and competitor analysis, including insights for content generation.
+POST /api/backlink/track:
+
+Calls the backlink tracker API to fetch and analyze backlinks for a given URL.
+POST /api/create-checkout-session:
+
+Initializes a Stripe checkout session for user payments based on the chosen subscription plan (premium, basic, free tier).
+GET /api/subscription/{user_id}:
+
+Retrieves the subscription details for a particular user.
+5. Technologies Used
+Frontend:
+
+React 18
+Material-UI v5 (MUI) for UI components
+Axios for API calls
+Backend:
+
+Flask (Python 3.11)
+Redis (for caching API and SEO analysis data)
+SQLite/Postgres (for persistent user data storage)
+Elasticsearch (for error logging and search functionalities)
+Docker (for containerization)
+Payment Integration:
+
+Stripe API for payment processing and subscription management.
+SEO/Content Analysis:
+
+Perplexity API (for generating content insights)
+BeautifulSoup (for HTML scraping and SEO metrics calculation)
+Backlink Tracking:
+
+External Backlink Tracker API for retrieving backlink details.
+6. Calculated Features in the Application
+SEO Metrics:
+
+Title Tags: Checks for length, keyword usage, and optimization.
+Meta Descriptions: Analyzes meta tags for length, keyword relevance, and uniqueness.
+Headers: Validates H1 and H2 tags for keyword usage, structure, and hierarchy.
+Alt Text: Analyzes image alt text for keyword relevance and uniqueness.
+Keyword Density: Calculates the keyword density for main content and evaluates keyword stuffing.
+Page Speed: Measures loading speed of the website, identifying bottlenecks and providing suggestions.
+Perplexity AI Features:
+
+Keyword Insights: Provides related keywords, trends, and ranking possibilities.
+Content Suggestions: Offers content creation ideas based on the keyword input.
+Competitor Analysis: Suggests improvements based on competitor websites for specific keywords.
+Backlink Analysis:
+
+Total Backlinks: Calculates the total number of backlinks a site has.
+High-Quality Backlinks: Segments backlinks based on quality and authority.
+Low-Quality Backlinks: Identifies potential spam or harmful backlinks.
+Subscription Management:
+
+Profile and Plans: User can choose free, basic, or premium tiers for access to SEO features.
+Payment Status: Tracks successful payments, billing cycles, and payment failures via Stripe.
+7. Dynamic SEO and Scalability
+The application has been designed to scale dynamically:
+
+Data Transformation: SEO results are processed and stored for future comparisons, with historical data caching for optimized retrieval.
+Dynamic Subscription Plans: Subscription tiers are adjustable, and the system is built to allow for future integration of new plans and API services.
+Scalable Architecture: With Docker containers, the application can scale easily across different environments. Kubernetes and AWS
